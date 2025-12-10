@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:symptomsphere/provider/common_provider.dart';
 import 'package:symptomsphere/ui/base_window/base_window.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CommonProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,4 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

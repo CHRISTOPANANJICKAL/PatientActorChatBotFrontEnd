@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 import 'package:symptomsphere/models/chat_list_model.dart';
 import 'package:symptomsphere/models/message_model.dart';
+import 'package:symptomsphere/provider/common_provider.dart';
 import 'package:symptomsphere/utils/color_utils.dart';
 import 'package:symptomsphere/utils/name_utils.dart';
+import 'package:symptomsphere/widgets/button/hover_gesture_detector.dart';
 
 class MessageBubble extends StatelessWidget {
   final Conversation model;
@@ -29,28 +34,36 @@ class MessageBubble extends StatelessWidget {
               child: Text(getInitials(patient.userName), style: TextStyle(color: AppColors.offWhiteText, fontSize: 18)),
             ),
           Flexible(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              decoration: BoxDecoration(
-                color: isBot ? AppColors.white : AppColors.blue,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(isBot ? 0 : 12),
-                  topRight: Radius.circular(isBot ? 12 : 0),
-                  bottomLeft: const Radius.circular(12),
-                  bottomRight: const Radius.circular(12),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 3,
-                    offset: const Offset(0, 2),
+            child: HoverGD(
+              onTap: !context.watch<CommonProvider>().voiceEnabled
+                  ? null
+                  : () {
+                      final FlutterTts tts = FlutterTts();
+                      tts.speak(model.message.trim());
+                    },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: isBot ? AppColors.white : AppColors.blue,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(isBot ? 0 : 12),
+                    topRight: Radius.circular(isBot ? 12 : 0),
+                    bottomLeft: const Radius.circular(12),
+                    bottomRight: const Radius.circular(12),
                   ),
-                ],
-              ),
-              child: Text(
-                model.message.trim(),
-                style: TextStyle(fontSize: 16, color: isBot ? AppColors.text : AppColors.white),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 3,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  model.message.trim(),
+                  style: TextStyle(fontSize: 16, color: isBot ? AppColors.text : AppColors.white),
+                ),
               ),
             ),
           ),

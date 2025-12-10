@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:provider/provider.dart';
 import 'package:symptomsphere/models/chat_list_model.dart';
 import 'package:symptomsphere/models/message_model.dart';
 import 'package:symptomsphere/network/endpoints.dart';
+import 'package:symptomsphere/provider/common_provider.dart';
 import 'package:symptomsphere/ui/chat_window/widgets/message_bubble.dart';
 import 'package:symptomsphere/ui/chat_window/widgets/message_text_field.dart';
 import 'package:symptomsphere/utils/color_utils.dart';
@@ -137,6 +140,9 @@ class _ChatWindowState extends State<ChatWindow> {
       final jsonMessageResponse = jsonEncode(messageListResponse);
       final decodedMessageJson = jsonDecode(jsonMessageResponse);
       message = MessageModel.fromJson(decodedMessageJson);
+
+      _speakTheLatestMessage();
+
       widget.model.conversationCount += 2;
       messageSending = Status.success;
       controller.clear();
@@ -189,5 +195,13 @@ class _ChatWindowState extends State<ChatWindow> {
             duration: Duration(milliseconds: 250), curve: Curves.easeIn);
       });
     } catch (_) {}
+  }
+
+  void _speakTheLatestMessage() {
+    if (message == null || message!.conversations.isEmpty || !context.read<CommonProvider>().voiceEnabled) return;
+
+    final lastMessage = message!.conversations.last;
+    FlutterTts tts = FlutterTts();
+    tts.speak(lastMessage.message);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:symptomsphere/models/chat_list_model.dart';
+import 'package:symptomsphere/provider/common_provider.dart';
 import 'package:symptomsphere/utils/color_utils.dart';
 import 'package:symptomsphere/utils/name_utils.dart';
 import 'package:symptomsphere/widgets/button/hover_gesture_detector.dart';
@@ -36,6 +38,18 @@ class _TitleBarState extends State<TitleBar> {
             SizedBox(width: 12),
             Text(widget.model.userName, style: TextStyle(color: AppColors.text, fontSize: 16)),
             Spacer(),
+            Consumer<CommonProvider>(builder: (context, p, w) {
+              return Checkbox(
+                value: p.voiceEnabled,
+                onChanged: (a) => p.setEnableVoice(a ?? false),
+                activeColor: Colors.blue,
+                fillColor: WidgetStatePropertyAll(p.voiceEnabled ? Colors.green : Colors.white),
+                checkColor: Colors.white,
+                side: BorderSide(color: Colors.green, width: 2),
+              );
+            }),
+            Text('Enable Voice', style: TextStyle(color: Colors.green, fontSize: 16, fontWeight: FontWeight.w500)),
+            SizedBox(width: 24),
             if (widget.model.conversationCount > 4)
               HoverGD(
                 onTap: _onGradeTap,
