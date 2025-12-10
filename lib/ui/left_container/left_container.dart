@@ -46,7 +46,7 @@ class _LeftContainerState extends State<LeftContainer> {
         children: [
           LogoAndName(),
           SizedBox(height: 28),
-          SearchBarWidget(onNewTap: _onNewTap, onRefreshTap: _loadMessages),
+          SearchBarWidget(onNewTap: _onNewTap, onRefreshTap: _loadMessages, controller: searchController),
           SizedBox(height: 18),
           Expanded(
             child: PatientListView(

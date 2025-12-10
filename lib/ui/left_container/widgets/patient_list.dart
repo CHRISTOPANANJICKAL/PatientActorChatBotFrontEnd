@@ -23,6 +23,30 @@ class PatientListView extends StatefulWidget {
 }
 
 class _PatientListViewState extends State<PatientListView> {
+  String searchText = '';
+
+  @override
+  void initState() {
+    widget.controller.addListener(_onSearch);
+
+    super.initState();
+  }
+
+  void _onSearch() {
+    if (!mounted) return;
+    setState(() {
+      searchText = widget.controller.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    try {
+      widget.controller.removeListener(_onSearch);
+    } catch (_) {}
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.status == Status.loading) {

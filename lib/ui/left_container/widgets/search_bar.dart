@@ -6,8 +6,9 @@ import 'package:symptomsphere/widgets/metrics_popup.dart';
 class SearchBarWidget extends StatelessWidget {
   final Function() onNewTap;
   final Function() onRefreshTap;
+  final TextEditingController controller;
 
-  const SearchBarWidget({super.key, required this.onNewTap, required this.onRefreshTap});
+  const SearchBarWidget({super.key, required this.onNewTap, required this.onRefreshTap, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class SearchBarWidget extends StatelessWidget {
       children: [
         Flexible(
           child: SearchBar(
+            controller: controller,
             constraints: BoxConstraints(minHeight: 46),
             hintText: 'Search Patients',
             hintStyle: WidgetStatePropertyAll(TextStyle(color: AppColors.offWhiteText)),
