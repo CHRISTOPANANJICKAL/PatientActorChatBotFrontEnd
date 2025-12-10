@@ -8,9 +8,15 @@ class PatientListView extends StatefulWidget {
   final Status status;
   final String error;
   final List<ChatListModel> chats;
+  final TextEditingController controller;
 
   const PatientListView(
-      {super.key, required this.onTap, required this.status, required this.error, required this.chats});
+      {super.key,
+      required this.onTap,
+      required this.status,
+      required this.error,
+      required this.chats,
+      required this.controller});
 
   @override
   State<PatientListView> createState() => _PatientListViewState();
@@ -40,13 +46,29 @@ class _PatientListViewState extends State<PatientListView> {
     }
 
     return ListView.builder(
-      itemCount: widget.chats.length,
+      key: Key(widget.controller.text),
+      itemCount: getChants().length,
       itemBuilder: (context, i) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 4),
-          child: PatientTileWidget(model: widget.chats[i], onTap: widget.onTap),
+          child: PatientTileWidget(model: getChants()[i], onTap: widget.onTap),
         );
       },
     );
+  }
+
+  List<ChatListModel> getChants() {
+    List<ChatListModel> allChats = widget.chats;
+    String text = widget.controller.text.trim().toLowerCase();
+    if (text.isEmpty) return allChats;
+
+    List<ChatListModel> filtered = [];
+
+    for (final i in widget.chats) {
+      if (i.userName.toLowerCase().contains(text.toLowerCase())) filtered.add(i);
+    }
+
+    if (filtered.isNotEmpty) return filtered;
+    return allChats;
   }
 }

@@ -9,6 +9,8 @@ class Endpoints {
   static String sendMessage = '${baseUrl}send_message';
 
   static String evaluate(String chatId) => '${baseUrl}evaluate/$chatId';
+  static String getMetrics = '${baseUrl}metrics';
+  static String saveMatrics = '${baseUrl}set_metrics';
 }
 
 class ApiHelper {

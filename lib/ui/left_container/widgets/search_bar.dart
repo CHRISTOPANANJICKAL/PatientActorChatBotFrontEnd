@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:symptomsphere/utils/color_utils.dart';
 import 'package:symptomsphere/widgets/button/hover_gesture_detector.dart';
+import 'package:symptomsphere/widgets/metrics_popup.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final Function() onNewTap;
@@ -29,7 +30,7 @@ class SearchBarWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 12),
         HoverGD(
           onTap: onNewTap,
           child: Container(
@@ -39,7 +40,7 @@ class SearchBarWidget extends StatelessWidget {
             child: Icon(Icons.add, color: AppColors.white),
           ),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 12),
         HoverGD(
           onTap: onRefreshTap,
           child: Container(
@@ -47,6 +48,16 @@ class SearchBarWidget extends StatelessWidget {
             height: 46,
             decoration: BoxDecoration(color: AppColors.blue, borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Icon(Icons.refresh, color: AppColors.white),
+          ),
+        ),
+        SizedBox(width: 12),
+        HoverGD(
+          onTap: () => showMetricsPopup(context),
+          child: Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(color: Colors.red.shade400, borderRadius: BorderRadius.all(Radius.circular(12))),
+            child: Icon(Icons.settings, color: AppColors.white),
           ),
         ),
       ],

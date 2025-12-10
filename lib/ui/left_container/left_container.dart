@@ -22,11 +22,19 @@ class _LeftContainerState extends State<LeftContainer> {
   Status listLoadingStatus = Status.loading;
   String listError = "";
   List<ChatListModel> chats = [];
+  late TextEditingController searchController;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((e) => _loadMessages());
+    searchController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,7 +49,14 @@ class _LeftContainerState extends State<LeftContainer> {
           SearchBarWidget(onNewTap: _onNewTap, onRefreshTap: _loadMessages),
           SizedBox(height: 18),
           Expanded(
-              child: PatientListView(onTap: widget.onTap, status: listLoadingStatus, error: listError, chats: chats)),
+            child: PatientListView(
+              onTap: widget.onTap,
+              status: listLoadingStatus,
+              error: listError,
+              chats: chats,
+              controller: searchController,
+            ),
+          ),
         ],
       ),
     );
